@@ -8,55 +8,63 @@ const Button = ({ handleClick, text }) => {
   </button>
  )
 }
-const Statistics = (props) => {
-  return (
-    <div>{props.text} {props.value}</div>
-  )
-}
+
 const App = () => {
   // save clicks of each button to own state
   
   const [good, setGood] = useState(0)
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
+  const all = good + neutral + bad 
+  const average = (good * 1 + neutral * 0 +  bad * -1)/ all 
+  const positive = good / all * 100 + '%'
  
  
   const increaseByOneLeft = () => {setGood(good + 1)}
   const increaseByOneMiddle = () => {setNeutral(neutral + 1)}
   const increaseByOneRight = () => {setBad(bad + 1)}
  
-  const all = <all value={good + neutral + bad} />
-  const average = <average value={(good * 1 + neutral * 0 +  bad * -1)/ all} />
-  const positive = <positive value={good / all * 100 + '%'} />
-
+ 
 
   return (
     <div>
       <h1>give feedback</h1>
-    <Button
-      handleClick={increaseByOneLeft}
-      text='good'
-    />
-    <Button
-      handleClick={increaseByOneMiddle} 
-      text='neutral'
-    />     
-    <Button
-      handleClick={increaseByOneRight}
-      text='bad'
-    /> 
-     <h1>statistics</h1>
-     <Statistics text='good' value={good} />
-     <Statistics text='neutral' value={neutral} />
-     <Statistics text='bad' value={bad} />
-     <Statistics text='all' value={good + neutral + bad} />
-     <Statistics text='average' value={(good * 1 + neutral * 0 +  bad * -1) / all} />
-     <Statistics text='positive' value={(good / all * 100) + ' %'} />
+      <Button handleClick={increaseByOneLeft} text='good'/>
+      <Button handleClick={increaseByOneMiddle} text='neutral' />
+      <Button handleClick={increaseByOneRight} text='bad'/>
+      <h1>statistics</h1>    
+      <Statistics good={good} neutral={neutral} bad={bad} all={all} average={average} positive={positive}/>
+    </div>
+
+   )
+  }
+  const Statistic = (props) => {
+    return (
+  <div>{props.text} {props.value}</div>
+    )
+  }
+   
+  const Statistics = (props) => {
+    if (props.all === 0) {
+   return (
+    <div>
+      <p>No feedback given</p>
     </div>
    )
-  
-  } 
-ReactDOM.render(<App />, 
+    }
+    
+ return (
+    <div>
+      <Statistic text='good' value={props.good} />
+      <Statistic text='neutral' value={props.neutral} />
+      <Statistic text='bad' value={props.bad} />
+      <Statistic text='all' value={props.good + props.neutral + props.bad} />
+      <Statistic text='average' value={(props.good * 1 + props.neutral * 0 +  props.bad * -1) / props.all} />
+      <Statistic text='positive' value={(props.good / props.all * 100) + ' %'} />
+    </div>
+  )
+ }
+  ReactDOM.render(<App />, 
   document.getElementById('root')
 )
 
