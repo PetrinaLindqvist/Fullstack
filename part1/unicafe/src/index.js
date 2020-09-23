@@ -21,7 +21,7 @@ const App = () => {
  
  
   const increaseByOneLeft = () => {setGood(good + 1)}
-  const increaseByOneMiddle = () => {setNeutral(neutral + 1)}
+  const increaseByOneMiddle= () => {setNeutral(neutral + 1)}
   const increaseByOneRight = () => {setBad(bad + 1)}
  
  
@@ -34,15 +34,13 @@ const App = () => {
       <Button handleClick={increaseByOneRight} text='bad'/>
       <h1>statistics</h1>    
       <Statistics good={good} neutral={neutral} bad={bad} all={all} average={average} positive={positive}/>
+      
     </div>
 
    )
   }
-  const Statistic = (props) => {
-    return (
-  <div>{props.text} {props.value}</div>
-    )
-  }
+
+
    
   const Statistics = (props) => {
     if (props.all === 0) {
@@ -55,12 +53,12 @@ const App = () => {
     
  return (
     <div>
-      <Statistic text='good' value={props.good} />
-      <Statistic text='neutral' value={props.neutral} />
-      <Statistic text='bad' value={props.bad} />
-      <Statistic text='all' value={props.good + props.neutral + props.bad} />
-      <Statistic text='average' value={(props.good * 1 + props.neutral * 0 +  props.bad * -1) / props.all} />
-      <Statistic text='positive' value={(props.good / props.all * 100) + ' %'} />
+      <div>good {props.good} </div>
+      <div>neutral {props.neutral}</div>
+      <div>bad {props.bad}</div>
+      <div>all {props.all}</div>
+      <div>average {props.average}</div>
+      <div>positive {props.positive}</div>
     </div>
   )
  }
