@@ -52,14 +52,28 @@ const App = () => {
     }
     
  return (
-    <div>
-      <div>good {props.good} </div>
-      <div>neutral {props.neutral}</div>
-      <div>bad {props.bad}</div>
-      <div>all {props.all}</div>
-      <div>average {props.average}</div>
-      <div>positive {props.positive}</div>
-    </div>
+    <table>
+      <thead>
+      <tr>
+        <td>good {props.good} </td>
+      </tr>
+      <tr>
+        <td>neutral {props.neutral}</td>
+      </tr>
+      <tr>
+        <td>bad {props.bad}</td>
+      </tr>
+      <tr>
+        <td>all {props.all}</td>
+      </tr>
+      <tr>
+        <td>average {props.average}</td>
+      </tr>
+      <tr>
+        <td>positive {props.positive}</td>
+      </tr>
+      </thead>
+    </table>
   )
  }
   ReactDOM.render(<App />, 
