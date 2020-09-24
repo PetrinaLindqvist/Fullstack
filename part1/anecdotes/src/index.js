@@ -13,18 +13,33 @@ const App = (props) => {
   
   const showAnecdote = () => setSelected([Math.floor(Math.random() * 6)])
   const [points, addPoints] = useState(new Array(7).join('0').split('').map(parseFloat))
-
+  
+  const maxVotes = () => {
+    let maxNum = 0
+    let maxPoint = 0
+    for (let i = 0; i <= props.anecdotes.length; i++){
+      if(points[i] >= maxNum){
+        maxNum = points[i]
+        maxPoint = i
+      }
+    }  
+  return maxPoint
+  }
   
   const addVotes = () => {const copy = [...points]
   copy[selected] += 1
   addPoints(copy)}     
-
+    
   return (
     <div>
-      <h3>{props.anecdotes[selected]}</h3>
-      <h3>has {points[selected]} votes</h3>
+      <h2>Anecdote of the day</h2>
+      <h4>{props.anecdotes[selected]}</h4>
+      <p>has {points[selected]} votes</p>
       <Button handleClick={addVotes} text='vote'/>
       <Button handleClick={showAnecdote} text='next anecdote'/>
+      <h2>Anecdote with most votes</h2>
+      <h4>{props.anecdotes[maxVotes()]}</h4>
+      <p>has {points[maxVotes()]} votes</p>
     </div>
     )
   }  
