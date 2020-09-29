@@ -1,4 +1,7 @@
 import React, { useState } from 'react'
+import PersonForm from './Components/PersonForm'
+import Filter from './Components/Filter'
+import Persons from './Components/Persons'
 
 const App = () => {
   const [ persons, setPersons ] = useState([
@@ -8,12 +11,7 @@ const App = () => {
     { name: 'Mary Poppendieck', number: '39-23-6423122' }
   ])
 
- 
-  const [ newName, setNewName ] = useState('')
-  const [ newNumber, setNewNumber ] = useState('')
-  const [ newFilter, setNewFilter] = useState('')
-
-  const addPerson = (event) => {
+  const AddPerson = (event) => {
     event.preventDefault()
     console.log('button clicked', event.target)
     const noteObject = {
@@ -22,8 +20,8 @@ const App = () => {
       date: new Date().toISOString(),
       id: persons.length + 1,
   
+ 
 }
-
   if (persons.some(person =>
     person.name === newName)) {
   window.alert(`${newName} is already added to phonebook`)
@@ -32,8 +30,15 @@ const App = () => {
   setPersons(persons.concat(noteObject))
   setNewName('')
   setNewNumber('')
-  }
 }
+ 
+}
+ 
+  const [ newName, setNewName ] = useState('')
+  const [ newNumber, setNewNumber ] = useState('')
+  const [ newFilter, setNewFilter] = useState('')
+
+ 
   const handleNoteChange = (event) => {
     console.log(event.target.value)
     setNewName(event.target.value)
@@ -53,20 +58,11 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <form onSubmit={addPerson} > 
-        <div>filter shown with<input value={newFilter} onChange={handleFilterChange} /> </div>        
-      </form>
-      <h2>add a new</h2>
-      <form onSubmit={addPerson} > 
-        <div>name: <input value={newName} onChange={handleNoteChange} /> </div>
-        <div>number: <input value={newNumber} onChange={handleNumberChange}/></div>
-        <div><button type="submit">add</button></div>
-      </form>
+      <Filter value={newFilter} onChange={handleFilterChange} />       
+      <h2>Add a new</h2>
+      <PersonForm value={newName} onChange={handleNoteChange} /> 
       <h2>Numbers</h2>
-      <ul>
-        {persons.filter(note => 
-          note.name.toLowerCase().includes(newFilter.toLowerCase())).map(note => <li key={note.name}>{note.name} {note.number}</li>)}
-      </ul> 
+      <Persons AddPersons={persons} newFilter={handleNumberChange} />
     </div>  
     
   )
