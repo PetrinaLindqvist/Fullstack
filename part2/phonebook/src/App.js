@@ -11,7 +11,7 @@ const App = () => {
     { name: 'Mary Poppendieck', number: '39-23-6423122' }
   ])
 
-  const AddPerson = (event) => {
+  const addPerson = (event) => {
     event.preventDefault()
     console.log('button clicked', event.target)
     const noteObject = {
@@ -58,11 +58,11 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Filter value={newFilter} onChange={handleFilterChange} />       
+      <Filter value={newFilter} handleFilterChange={handleFilterChange} />       
       <h2>Add a new</h2>
-      <PersonForm value={newName} onChange={handleNoteChange} /> 
+      <PersonForm name={newName} handleNoteChange={handleNoteChange} number={newNumber} handleNumberChange={handleNumberChange} addPerson={addPerson}/> 
       <h2>Numbers</h2>
-      <Persons AddPersons={persons} newFilter={handleNumberChange} />
+      <Persons persons={persons} newFilter={newFilter} />
     </div>  
     
   )
