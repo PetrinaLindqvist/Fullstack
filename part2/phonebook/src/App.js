@@ -7,6 +7,9 @@ import Persons from './Components/Persons'
 
 const App = () => {
   const [ persons, setPersons ] = useState([])
+  const [ newName, setNewName ] = useState('')
+  const [ newNumber, setNewNumber ] = useState('')
+  const [ newFilter, setNewFilter] = useState('')
 
   const hook = () => {
     console.log('effect')
@@ -28,9 +31,14 @@ const App = () => {
       number: newNumber,
       date: new Date().toISOString(),
       id: persons.length + 1,
+    }
+    axios
+    .post('http://localhost:3001/persons', noteObject)
+    .then(response => {
+      setPersons(persons.concat(response.data))
+      setNewName('')
+    })
   
- 
-}
   if (persons.some(person =>
     person.name === newName)) {
   window.alert(`${newName} is already added to phonebook`)
@@ -43,9 +51,7 @@ const App = () => {
  
 }
  
-  const [ newName, setNewName ] = useState('')
-  const [ newNumber, setNewNumber ] = useState('')
-  const [ newFilter, setNewFilter] = useState('')
+  
 
  
   const handleNoteChange = (event) => {
