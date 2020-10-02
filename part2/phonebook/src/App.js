@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
 import PersonForm from './Components/PersonForm'
 import Filter from './Components/Filter'
 import Persons from './Components/Persons'
-
+import personsTwo from './services/persons'
 
 const App = () => {
   const [ persons, setPersons ] = useState([])
@@ -11,17 +10,14 @@ const App = () => {
   const [ newNumber, setNewNumber ] = useState('')
   const [ newFilter, setNewFilter] = useState('')
 
-  const hook = () => {
-    console.log('effect')
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        console.log('promise fulfilled')
-        setPersons(response.data)
+  useEffect(() => {
+    personsTwo
+      .getAll()
+      .then(initialNotes => {
+        setPersons(initialNotes)
       })
-  }
-  
-  useEffect(hook, [])
+  }, [])
+
 
   const addPerson = (event) => {
     event.preventDefault()
@@ -32,12 +28,15 @@ const App = () => {
       date: new Date().toISOString(),
       id: persons.length + 1,
     }
-    axios
-    .post('http://localhost:3001/persons', noteObject)
-    .then(response => {
-      setPersons(persons.concat(response.data))
+
+    personsTwo
+    .create(noteObject)
+    .then(returnedNote => {
+      setPersons(persons.concat(returnedNote))
       setNewName('')
     })
+    
+
   
   if (persons.some(person =>
     person.name === newName)) {
@@ -51,7 +50,6 @@ const App = () => {
  
 }
  
-  
 
  
   const handleNoteChange = (event) => {
