@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import Countries from './components/Countries'
 import Filter from './components/filter'
-import OneCountry from './components/OneCountry'
+
 
 
 const App = () => {
@@ -25,18 +25,17 @@ const handleFilterChange = (event) => {
   
   }
 
-const handleonClick = (event) => {
+const handleOnClick = (event) => {
     console.log(event.target.value)
     setNewFilter(event.target.value)
 }  
 
 return (
   <div>
-    <find countries />
     <Filter value={newFilter} handleFilterChange={handleFilterChange} />  
     <br />
-    <Countries countries={countries} filter={newFilter} handleonClick={handleonClick} />
-
+    <Countries countries={countries} filter={newFilter} handleOnClick={handleOnClick} />
+    
   </div>  
   
 )

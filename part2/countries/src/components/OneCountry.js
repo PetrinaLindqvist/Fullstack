@@ -10,8 +10,10 @@ const OneCountry = ({country}) => {
           <p>Capital {country.capital}
           <br/>
            Population {country.population}</p>
-          <h2> Languages</h2>
-          <ul>{country.languages.map(l => <li key={l.iso639_1}>{l.name}</li>)}</ul>
+          <h2>Languages</h2>
+          <ul>
+              {country.languages.map(l => <li key={l.iso639_1}>{l.name}</li>)}
+         </ul>
           <img src={country.flag} style={iconStyle} alt={country.name} />
           
      </div> 

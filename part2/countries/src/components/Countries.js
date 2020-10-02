@@ -17,7 +17,8 @@ const Countries = ({countries, filter, handleOnClick}) => {
     {
     return (
         <div>
-        {filterCountries.map(countries => <li Key= {countries.alpha2Code}>{countries.name}</li> )}
+        {filterCountries.map(countries => <li key= {countries.alpha2Code}>{countries.name}
+        <button onClick={handleOnClick} value={countries.name}>show </button></li> )}
         </div> 
     )
   }
