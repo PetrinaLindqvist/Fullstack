@@ -29,12 +29,13 @@ const App = () => {
       id: persons.length + 1,
     }
 
-    personsTwo
-    .create(noteObject)
-    .then(returnedNote => {
-      setPersons(persons.concat(returnedNote))
-      setNewName('')
-    })
+
+  personsTwo
+  .create(noteObject)
+  .then(returnedNote => {
+    setPersons(persons.concat(returnedNote))
+    setNewName('')
+  })
     
 
   
@@ -47,9 +48,23 @@ const App = () => {
   setNewName('')
   setNewNumber('')
 }
- 
+
+
+
 }
- 
+const deletePerson = (id) => {
+  const p = persons.find((p) => p.id === id)
+  if (window.confirm(`Delete ${p.name}?`))
+  console.log('delete')
+  personsTwo
+  .takeAway(id)
+  .then(response => {
+    const del = persons.filter(persons => id !== persons.id)
+    setPersons(del)
+
+  })
+
+}
 
  
   const handleNoteChange = (event) => {
@@ -68,6 +83,8 @@ const App = () => {
     setNewFilter(event.target.value)
   
   }
+
+ 
   return (
     <div>
       <h2>Phonebook</h2>
@@ -75,7 +92,7 @@ const App = () => {
       <h2>Add a new</h2>
       <PersonForm name={newName} handleNoteChange={handleNoteChange} number={newNumber} handleNumberChange={handleNumberChange} addPerson={addPerson}/> 
       <h2>Numbers</h2>
-      <Persons persons={persons} newFilter={newFilter} />
+      <Persons persons={persons} newFilter={newFilter} deletePerson={deletePerson} />
     </div>  
     
   )
