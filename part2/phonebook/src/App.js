@@ -9,6 +9,7 @@ const App = () => {
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [ newFilter, setNewFilter] = useState('')
+  const [ errorMess, setErrorMess ] = useState([ '', false])
 
   useEffect(() => {
     personsTwo
@@ -54,15 +55,15 @@ const App = () => {
 }
 const deletePerson = (id) => {
   const p = persons.find((p) => p.id === id)
-  if (window.confirm(`Delete ${p.name}?`))
+  if (window.confirm(`Delete ${p.name}?`)) {
   console.log('delete')
   personsTwo
   .takeAway(id)
-  .then(response => {
-    const del = persons.filter(persons => id !== persons.id)
-    setPersons(del)
+  .then() 
+  const del = persons.filter(persons => id !== persons.id)
+    setPersons(del)}
 
-  })
+
 
 }
 
