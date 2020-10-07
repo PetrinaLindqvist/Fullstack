@@ -4,12 +4,13 @@ import Filter from './Components/Filter'
 import Persons from './Components/Persons'
 import personsTwo from './services/persons'
 
+
 const App = () => {
   const [ persons, setPersons ] = useState([])
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [ newFilter, setNewFilter] = useState('')
-  const [ errorMess, setErrorMess ] = useState([ '', false])
+  
 
   useEffect(() => {
     personsTwo
@@ -28,44 +29,50 @@ const App = () => {
       number: newNumber,
       date: new Date().toISOString(),
       id: persons.length + 1,
+      
     }
-
-
-  personsTwo
-  .create(noteObject)
-  .then(returnedNote => {
-    setPersons(persons.concat(returnedNote))
-    setNewName('')
-  })
-    
-
   
-  if (persons.some(person =>
-    person.name === newName)) {
-  window.alert(`${newName} is already added to phonebook`)
-  }
-  else {
-  setPersons(persons.concat(noteObject))
-  setNewName('')
-  setNewNumber('')
+
+  if (persons.every((note) => note.name.toLowerCase() !== newName.toLowerCase()))
+  {
+    personsTwo
+      .create(noteObject)
+      .then(returnedNote => {
+        setPersons(persons.concat(returnedNote))
+        setNewName('')
+        setNewNumber('')    
+})
 }
 
+  else if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
+    personUpdated(noteObject)
+  }  
+ 
+}
 
+const personUpdated = (person) => {
+  const identity = persons.find(n => n.name.toLowerCase() === person.name.toLowerCase()).id
+  person = {...person, id: identity}
+  personsTwo
+  .update(identity, person)
+  .then(returnedNote => {
+    setPersons(persons.map(n => n.id !== identity ? n : returnedNote))
+    setNewName('')
+    setNewNumber('')
+  })
 
 }
 const deletePerson = (id) => {
-  const p = persons.find((p) => p.id === id)
-  if (window.confirm(`Delete ${p.name}?`)) {
+  const person = persons.find((persons) => persons.id === id)
+  if (window.confirm(`Delete ${person.name}?`)) {
   console.log('delete')
   personsTwo
   .takeAway(id)
-  .then() 
-  const del = persons.filter(persons => id !== persons.id)
-    setPersons(del)}
-
-
-
+  .then()
+  setPersons(persons.filter(persons => id !== persons.id))
+  }
 }
+
 
  
   const handleNoteChange = (event) => {
