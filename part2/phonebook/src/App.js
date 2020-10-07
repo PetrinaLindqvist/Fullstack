@@ -12,6 +12,7 @@ const App = () => {
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [ newFilter, setNewFilter] = useState('')
+  const [ message, setMessage] = useState(null)
   const [ error, setError] = useState(null)
 
   useEffect(() => {
@@ -43,11 +44,17 @@ const App = () => {
         setPersons(persons.concat(returnedNote))
         setNewName('')
         setNewNumber('') 
-        setError(`Added ${returnedNote.name}`)
+        setMessage(`Added ${returnedNote.name}`)
         setTimeout(() => {
-          setError(null)
+          setMessage(null)
         },2000)  
   })
+        .catch(error => {
+        setError(error.response.data.errorMessage)
+        setTimeout(() => {
+          setError(null)
+        },2000)
+    })
 }
 
   else if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
@@ -66,13 +73,31 @@ const personUpdated = (person) => {
     setPersons(persons.map(n => n.id !== identity ? n : returnedNote))
     setNewName('')
     setNewNumber('')
-    setError(`Changed ${returnedNote.name} number to ${newNumber}`)
+    setMessage(`Changed ${returnedNote.name} number to ${newNumber}`)
         setTimeout(() => {
-          setError(null)
-        },2000)  
+          setMessage(null)
+        }, 2000)  
   })
-
+  .catch(error => {
+  if (error.response.status === 400)
+  {
+    setError(error.response.data.errorMessage)
+    setTimeout(() => {
+      setError(null)
+    }, 3000)
+  }
+  else {
+    setPersons(persons.filter(n => n.id !== identity))
+    setError(`Information of ${person.name} has already been removed from the server`)
+    setTimeout(() => {
+      setError(null)
+    },3000)
+    setNewNumber('')
+    setNewName('')
+  }
+})
 }
+
 const deletePerson = (id) => {
   const person = persons.find((persons) => persons.id === id)
   if (window.confirm(`Delete ${person.name}?`)) {
@@ -81,10 +106,8 @@ const deletePerson = (id) => {
   .takeAway(id)
   .then()
   setPersons(persons.filter(persons => id !== persons.id))
-  }
 }
-
-
+}
  
   const handleNoteChange = (event) => {
     console.log(event.target.value)
@@ -107,7 +130,7 @@ const deletePerson = (id) => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={error} />
+      <Notification message={message} error={error} />
       <Filter value={newFilter} handleFilterChange={handleFilterChange} />       
       <h2>Add a new</h2>
       <PersonForm name={newName} handleNoteChange={handleNoteChange} number={newNumber} handleNumberChange={handleNumberChange} addPerson={addPerson}/> 

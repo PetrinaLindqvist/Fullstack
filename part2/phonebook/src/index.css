@@ -12,7 +12,7 @@ code {
     monospace;
 }
 
-.error {
+.message {
   color: green;
   background-color: lightgray;
   border-style: solid;
@@ -23,7 +23,7 @@ code {
 }
 
 
-.message {
+.error {
   color: red;
   background-color: lightgray;
   border-style: solid;
