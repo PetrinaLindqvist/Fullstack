@@ -28,7 +28,7 @@ const App = () => {
       name: newName,
       number: newNumber,
       date: new Date().toISOString(),
-      id: persons.length + 1,
+      /*id: persons.length + 1,*/
       
     }
   
