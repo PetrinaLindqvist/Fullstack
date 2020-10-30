@@ -24,7 +24,6 @@ const dummy = (blogs) => {
         
     }
     const mostBlogs = (blogs) => {
-        // Using lodash
         const groupedByAuthor = lodash.groupBy(blogs, blog => blog.author)
         const authorlist = []
         lodash.forEach(groupedByAuthor, (authorBlogs, author) => {
@@ -32,13 +31,29 @@ const dummy = (blogs) => {
                 author: author,
                 blogs: authorBlogs.length
             })
+
         })
-        const sortedAuthorList = lodash.sortBy(authorlist, author => author.blogs)
-        // Take the last object (with highest amount of blogs)
-        return sortedAuthorList.pop()
-    }    
+            const sortedAuthorList = lodash.sortBy(authorlist, author => author.blogs)
+                return sortedAuthorList.pop()
+    }
+
+        const mostLikes = (blogs) => {
+            const groupedByAuthor = lodash.groupBy(blogs, blog => blog.author)
+            const authorList = []
+            lodash.forEach(groupedByAuthor, (authorBlogs, author) => {
+                authorList.push({
+                    author: author,
+                    likes: totalLikes(authorBlogs)
+                })
+            })
+        
+            const sortedAuthorList = lodash.sortBy(authorList, author => author.likes)
+            return sortedAuthorList.pop()
+        
+    
+}
 
   
   module.exports = {
-    dummy, totalLikes, favoriteOfBlogs, mostBlogs,
+    dummy, totalLikes, favoriteOfBlogs, mostBlogs, mostLikes,
   }
