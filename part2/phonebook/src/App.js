@@ -50,7 +50,7 @@ const App = () => {
         },2000)  
   })
         .catch(error => {
-        setError(error.response.data.errorMessage)
+        setError(error.response.data.error)
         setTimeout(() => {
           setError(null)
         },2000)
@@ -81,7 +81,7 @@ const personUpdated = (person) => {
   .catch(error => {
   if (error.response.status === 400)
   {
-    setError(error.response.data.errorMessage)
+    setError(error.response.data.error)
     setTimeout(() => {
       setError(null)
     }, 3000)
