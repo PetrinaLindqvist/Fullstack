@@ -82,16 +82,26 @@ describe('total likes', () => {
         expect(result).toBe(36)
     })
 })
-    describe('favorite of blogs', () => {
-        test('if identified correct', () => {
-            const result = listHelper.favoriteOfBlogs(blogs)
-            const expectedBlog = {
-                title: "Canonical string reduction",
-                author: "Edsger W. Dijkstra",
-                url: "http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html",
-                likes: 12,
-                __v: 0,
+describe('favorite of blogs', () => {
+    test('if identified correct', () => {
+        const result = listHelper.favoriteOfBlogs(blogs)
+        const expectedBlog = {
+            title: "Canonical string reduction",
+            author: "Edsger W. Dijkstra",
+            url: "http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html",
+            likes: 12,
+            __v: 0,
         }
         expect(result).toEqual(expectedBlog)
     }) 
+})
+describe('author', () => {
+        test('most blogs is identified correct', () => {
+        const result = listHelper.mostBlogs(blogs)
+        const expectedAuthor = {
+            author: 'Robert C. Martin',
+            blogs: 3
+        }
+        expect(result).toEqual(expectedAuthor)
+    })
 })
