@@ -3,8 +3,8 @@ Content-Type: application/json
 
 
 {
-    "title": "PL", 
-    "author": "Petrina", 
-    "url": "www.pl.com", 
-    "likes": "105"
+    "title": "HL", 
+    "author": "Test", 
+    "url": "www.HL.com", 
+    "likes": "10"
 }
