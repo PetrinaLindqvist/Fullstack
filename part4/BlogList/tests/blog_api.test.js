@@ -18,11 +18,12 @@ const initialBlogs = [
   ]
   beforeEach(async () => {
     await Blog.deleteMany({})
-    let blogObject = new Blog(initialBlogs[0])
-    await blogObject.save()
-    //jest.setTimeout(10000)
-    blogObject = new Blog(initialBlogs[1])
-    await blogObject.save()
+
+    for (let blog of initialBlogs) {
+        let blogObject = new Blog(blog)
+        await blogObject.save()
+    }
+  
   })
  
 
@@ -41,6 +42,28 @@ test('correct amount of blogs', async () => {
 test('unique identifier named id', async () => {
   const response = await api.get('/api/blogs')
   expect(response.body[0].id).toBeDefined()
+
+})
+
+test('add a valid blog', async () => {
+  const newBlog = {
+    title: 'this blog',
+    author: "L.S",
+    url: "www.thisBlog",
+    likes: 5,
+  }
+  
+  await api
+  .post('/api/blogs')
+  .send(newBlog)
+  .expect(200)
+  .expect('Content-Type', /application\/json/)
+
+  const blogs = await Blog.find({})
+  expect(blogs).toHaveLength(initialBlogs.length + 1)
+
+  const authors = blogs.map(aut => aut.author)
+  expect(authors).toContain(newBlog.author)
 
 })
 
