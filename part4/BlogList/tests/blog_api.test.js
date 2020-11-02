@@ -45,7 +45,7 @@ test('unique identifier named id', async () => {
 
 })
 
-test('add a valid blog', async () => {
+test('add a blog', async () => {
   const newBlog = {
     title: 'this blog',
     author: "L.S",
@@ -53,7 +53,7 @@ test('add a valid blog', async () => {
     likes: 5,
   }
   
-  await api
+await api
   .post('/api/blogs')
   .send(newBlog)
   .expect(200)
@@ -67,6 +67,26 @@ test('add a valid blog', async () => {
 
 })
 
+test('if no likes, default to 0', async () => {
+  const newBlog = {
+    title: 'no likes',
+    author: "S.S",
+    url: "www.NoLikesBlog",
+  }
+
+  await api
+  .post('/api/blogs')
+  .send(newBlog)
+  .expect(200)
+  .expect('Content-Type', /application\/json/)
+
+  
+
+  const blogs = await Blog.find({})
+  expect(blogs[initialBlogs.length].likes).toBe(0)
+})
+
+  
 afterAll(() => {
   mongoose.connection.close()
   
