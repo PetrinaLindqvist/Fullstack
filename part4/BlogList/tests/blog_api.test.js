@@ -6,14 +6,16 @@ const Blog = require('../models/blog')
 
 const initialBlogs = [
     {
-      content: 'HTML is easy',
-      date: new Date(),
-      important: false,
+      title: 'Java',
+      author: 'N.M.',
+      url: 'wwww.java',
+      likes: 76,
     },
     {
-      content: 'Browser can execute only Javascript',
-      date: new Date(),
-      important: true,
+      title: 'Script',
+      author: 'L.S.',
+      url: 'www.script',
+      likes: 123,
     },
   ]
   beforeEach(async () => {
@@ -84,6 +86,21 @@ test('if no likes, default to 0', async () => {
 
   const blogs = await Blog.find({})
   expect(blogs[initialBlogs.length].likes).toBe(0)
+})
+
+test('succeeds if the id is valid with code 204', async () => {
+  const blogs = await Blog.find({})
+  const blogToDelete = blogs[0]
+
+  await api
+      .delete(`/api/blogs/${blogToDelete.id}`)
+      .expect(204)
+
+    const blogsAtEnd = await Blog.find({})
+    expect(blogsAtEnd).toHaveLength(initialBlogs.length - 1)
+
+    const blog = blogsAtEnd.map(b => b.title)
+    expect(blog).not.toContain(blogToDelete.title)
 })
 
   

@@ -52,6 +52,7 @@ const blogs = [
         __v: 0
     }
 ]
+const emptyBlogs = []
 
 const listWithOneBlog = [
     {
@@ -67,8 +68,8 @@ const listWithOneBlog = [
 describe('total likes', () => {
 
     test('empty list with 0', () => {
-        const blogs = []
-        const result = listHelper.totalLikes(blogs)
+        //const blogs = []
+        const result = listHelper.totalLikes(emptyBlogs)
         expect(result).toBe(0)
     })
 
