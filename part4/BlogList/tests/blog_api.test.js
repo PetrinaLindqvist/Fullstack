@@ -77,15 +77,29 @@ test('if no likes, default to 0', async () => {
   }
 
   await api
-  .post('/api/blogs')
-  .send(newBlog)
-  .expect(200)
-  .expect('Content-Type', /application\/json/)
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(200)
+    .expect('Content-Type', /application\/json/)
 
   
 
   const blogs = await Blog.find({})
   expect(blogs[initialBlogs.length].likes).toBe(0)
+})
+
+test('blogs must have url and title', async () => {
+  const newBlog = {
+    author: "A.L"
+  }
+  await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(400)
+
+  const bloglist = await Blog.find({})
+  expect(bloglist).toHaveLength(initialBlogs.length)
+  
 })
 
 test('succeeds if the id is valid with code 204', async () => {
@@ -103,7 +117,8 @@ test('succeeds if the id is valid with code 204', async () => {
     expect(blog).not.toContain(blogToDelete.title)
 })
 
-  
+
+
 afterAll(() => {
   mongoose.connection.close()
   
