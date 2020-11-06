@@ -2,8 +2,8 @@ POST http://localhost:3003/api/users
 Content-Type: application/json
 
 {
-    "username": "TokenTEST2",
-    "name": "hope this work",
-    "password": "jep"  
+    "username": "decodedToken",
+    "name": "still working?",
+    "password": "token"  
       
 }
