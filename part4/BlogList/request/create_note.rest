@@ -1,0 +1,10 @@
+POST http://localhost:3003/api/blogs/ 
+Content-Type: application/json 
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRva2VuVEVTVDIiLCJpZCI6IjVmYTUyZjVjNjdlY2NlNGI1NDkxMWI5NiIsImlhdCI6MTYwNDY2MTExN30.5DXC9r7lKXWDFnJAhehQXKCp7slJUBHMGQr9uEQzSkg
+
+{
+"url": "www.token.com", 
+"title": "Token works",
+"author": "T.S",
+"likes": "190"
+}
