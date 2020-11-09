@@ -1,10 +1,10 @@
-POST http://localhost:3003/api/blogs/ 
+POST http://localhost:3003/api/blogs/
 Content-Type: application/json 
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRlY29kZWRUb2tlbiIsImlkIjoiNWZhNTM1YmMwNTliNDcxMzI0YjZjMWZiIiwiaWF0IjoxNjA0NjYzMDQ5fQ.fsnOMTjjToeTBmoKOy6h9yt1XE32z8q17CQ4KS1xfIQ
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlN1bmRheSIsImlkIjoiNWZhODMzNGZhN2Y1ZGExOTc4NGQ1NGFkIiwiaWF0IjoxNjA0ODU4NzY1fQ.xTCtb8BHsJH2uJtPTxqkq2QpVorQkeD3E6GMip9xkZs
 
 {
-"url": "www.decodedtoken.com", 
-"title": "decoded works",
-"author": "R.F",
-"likes": "200"
+"url": "www.sunday.com", 
+"title": " works",
+"author": "W.S",
+"likes": "40"
 }
