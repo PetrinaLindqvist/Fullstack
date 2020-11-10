@@ -12,10 +12,7 @@ const App = () => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('') 
   const [password, setPassword] = useState('')
-  const [user, setUser] = useState(null)
-  const [newBlogTitle, setNewBlogTitle] = useState('')
-  const [newBlogAuthor, setNewBlogAuthor] = useState('')
-  const [newBlogUrl, setNewBlogUrl] = useState('')
+  const [user, setUser] = useState(null) 
   const [message, setMessage] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
   const blogFormRef = useRef()
@@ -36,22 +33,13 @@ const App = () => {
     }
   }, [])
 
-  const addNewBlog = (event) => {
-    event.preventDefault()
-    const blogObject = {
-      title: newBlogTitle,
-      author: newBlogAuthor,
-      url: newBlogUrl
-    }
+  const addNewBlog = (blogObject) => {
     blogFormRef.current.toggleVisibility()
     blogService
       .create(blogObject)
       .then(returnedNote => {
         setBlogs(blogs.concat(returnedNote))
-        setMessage(`A new blog "${newBlogTitle}" by ${newBlogAuthor} is added`)
-        setNewBlogTitle('')
-        setNewBlogAuthor('')
-        setNewBlogUrl('')
+        setMessage(`A new blog "${blogObject.title}" by ${blogObject.author} is added`)
         setTimeout(() => {
           setMessage(null)
         }, 4000)
@@ -115,16 +103,8 @@ if (user === null) {
       }}>logout</button></p>
        <div>
 
-       <Toggleable buttonLabel="new blog" ref={blogFormRef}>
-        <BlogForm
-          onSubmit={addNewBlog}
-          titleValue={newBlogTitle}
-          authorValue={newBlogAuthor}
-          urlValue={newBlogUrl}
-          handleTitleChange={({ target }) => setNewBlogTitle(target.value)}
-          handleAuthorChange={({ target }) => setNewBlogAuthor(target.value)}
-          handleUrlChange={({ target }) => setNewBlogUrl(target.value)}
-          />
+      <Toggleable buttonLabel="new blog" ref={blogFormRef}>
+        <BlogForm createBlog={addNewBlog} />
       </Toggleable>
 
       
