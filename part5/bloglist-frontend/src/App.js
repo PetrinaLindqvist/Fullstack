@@ -1,8 +1,11 @@
-import React, { useState, useEffect } from 'react'
-import Blog from './components/Blog'
+import React, { useState, useEffect, useRef } from 'react'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import Blog from './components/Blog'
 import Notifications from './components/Notification'
+import LoginForm from './components/LoginForm'
+import BlogForm from './components/BlogForm'
+import Toggleable from './components/Toggleable'
 import './App.css'
 
 const App = () => {
@@ -15,6 +18,7 @@ const App = () => {
   const [newBlogUrl, setNewBlogUrl] = useState('')
   const [message, setMessage] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
+  const blogFormRef = useRef()
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -39,7 +43,7 @@ const App = () => {
       author: newBlogAuthor,
       url: newBlogUrl
     }
-
+    blogFormRef.current.toggleVisibility()
     blogService
       .create(blogObject)
       .then(returnedNote => {
@@ -56,7 +60,7 @@ const App = () => {
 
 const handleLogin = async (event) => {
     event.preventDefault()
-    console.log('logging in with', username, password)
+    //console.log('logging in with', username, password)
   
 
   try {
@@ -65,7 +69,7 @@ const handleLogin = async (event) => {
     })
 
     window.localStorage.setItem(
-      'loggedNoteappUser', JSON.stringify(user)
+      'loggedUser', JSON.stringify(user)
       )
     blogService.setToken(user.token)
     setUser(user)
@@ -88,29 +92,15 @@ const handleLogin = async (event) => {
 if (user === null) {
   return (
     <div>
-      <h2>Log in to application</h2>
-      <Notifications message={message} errorMessage={errorMessage} />
-      <form onSubmit={handleLogin}>
-        <div>
-          username
-            <input
-            type="text"
-            value={username}
-            name="Username"
-            onChange={({ target }) => setUsername(target.value)}
-          />
-        </div>
-        <div>
-          password
-            <input
-            type="password"
-            value={password}
-            name="Password"
-            onChange={({ target }) => setPassword(target.value)}
-          />
-        </div>
-        <button type="submit">login</button>
-      </form>
+      
+      <Notifications message={message} errorMessage={errorMessage} /> 
+        <LoginForm
+        username={username}
+        password={password}
+        handleUsernameChange={({ target }) => setUsername(target.value)}
+        handlePasswordChange={({ target }) => setPassword(target.value)}
+        handleSubmit={ handleLogin }
+      />
     </div> 
       )
   }
@@ -120,42 +110,24 @@ if (user === null) {
       <Notifications message={message} errorMessage={errorMessage} />
       <p>{user.name} logged in
       <button onClick={() => {
-        window.localStorage.removeItem('loggedNoteappUser')
+        window.localStorage.removeItem('loggedUser')
         setUser(null)
       }}>logout</button></p>
        <div>
-      <h2>create new</h2>
-      <form onSubmit={addNewBlog}>
-        <div>
-          title:
-            <input
-            type="text"
-            value={newBlogTitle}
-            name="title"
-            onChange={({ target }) => setNewBlogTitle(target.value)}
-          />
-        </div>
-        <div>
-          author:
-            <input
-            type="text"
-            value={newBlogAuthor}
-            name="author"
-            onChange={({ target }) => setNewBlogAuthor(target.value)}
-          />
-        </div>
-        <div>
-          url:
-            <input
-            type="text"
-            value={newBlogUrl}
-            name="url"
-            onChange={({ target }) => setNewBlogUrl(target.value)}
-          />
-        </div>
-        <button type="submit">create</button>
-        </form>
 
+       <Toggleable buttonLabel="new blog" ref={blogFormRef}>
+        <BlogForm
+          onSubmit={addNewBlog}
+          titleValue={newBlogTitle}
+          authorValue={newBlogAuthor}
+          urlValue={newBlogUrl}
+          handleTitleChange={({ target }) => setNewBlogTitle(target.value)}
+          handleAuthorChange={({ target }) => setNewBlogAuthor(target.value)}
+          handleUrlChange={({ target }) => setNewBlogUrl(target.value)}
+          />
+      </Toggleable>
+
+      
       </div>
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
