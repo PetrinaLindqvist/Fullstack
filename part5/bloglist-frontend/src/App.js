@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import Notifications from './components/Notification'
+import './App.css'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -11,6 +13,8 @@ const App = () => {
   const [newBlogTitle, setNewBlogTitle] = useState('')
   const [newBlogAuthor, setNewBlogAuthor] = useState('')
   const [newBlogUrl, setNewBlogUrl] = useState('')
+  const [message, setMessage] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null)
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -19,10 +23,11 @@ const App = () => {
   }, [])
 
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedNoteappUser')
+    const loggedUserJSON = window.localStorage.getItem('loggedUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       setUser(user)
+      blogService.setToken(user.token)
       
     }
   }, [])
@@ -39,9 +44,13 @@ const App = () => {
       .create(blogObject)
       .then(returnedNote => {
         setBlogs(blogs.concat(returnedNote))
+        setMessage(`A new blog "${newBlogTitle}" by ${newBlogAuthor} is added`)
         setNewBlogTitle('')
         setNewBlogAuthor('')
         setNewBlogUrl('')
+        setTimeout(() => {
+          setMessage(null)
+        }, 4000)
       })
   }
 
@@ -62,10 +71,16 @@ const handleLogin = async (event) => {
     setUser(user)
     setUsername('')
     setPassword('')
-  } catch (exception) {
-    //setErrorMessage('Wrong credentials')
+    setMessage('Successfully logged in')
     setTimeout(() => {
-      //setErrorMessage(null)
+      setMessage(null)
+    }, 4000)
+  } catch (exception) {
+    setErrorMessage('Wrong username or password')
+    setUsername('')
+    setPassword('')
+    setTimeout(() => {
+      setErrorMessage(null)
     }, 5000)
   }
 }
@@ -74,6 +89,7 @@ if (user === null) {
   return (
     <div>
       <h2>Log in to application</h2>
+      <Notifications message={message} errorMessage={errorMessage} />
       <form onSubmit={handleLogin}>
         <div>
           username
@@ -101,6 +117,7 @@ if (user === null) {
   return (
     <div>
       <h2>blogs</h2>
+      <Notifications message={message} errorMessage={errorMessage} />
       <p>{user.name} logged in
       <button onClick={() => {
         window.localStorage.removeItem('loggedNoteappUser')
