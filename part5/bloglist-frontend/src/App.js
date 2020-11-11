@@ -90,6 +90,9 @@ const handleLogin = async (event) => {
     }, 5000)
   }
 }
+const blogsSorted = (blogs) => {
+  return blogs.sort((a, b) => b.likes - a.likes)
+}
 
 if (user === null) {
   return (
@@ -123,7 +126,7 @@ if (user === null) {
 
       
       </div>
-      {blogs.map(blog =>
+      {blogsSorted(blogs).map(blog =>
         <Blog key={blog.id} blog={blog}updateBlog={updateBlog} />
       )}
     </div>
