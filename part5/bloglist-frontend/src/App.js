@@ -19,7 +19,7 @@ const App = () => {
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
-      setBlogs( blogs )
+      setBlogs(blogs)
     )  
   }, [])
 
@@ -44,6 +44,20 @@ const App = () => {
           setMessage(null)
         }, 4000)
       })
+  }
+
+  const updateBlog = (id, blogObject) => {
+    const blogToUpdate = blogs.find(blog => blog.id === id)
+    blogService
+    .update(id, blogObject)
+    .then(returnedBlog => {
+      returnedBlog.user = blogToUpdate.user
+      setBlogs(blogs.map(blog => blog.id !== id ? blog : returnedBlog))
+    })
+    .catch(error => {
+      console.log("Something is wrong here!, error")
+    })
+
   }
 
 const handleLogin = async (event) => {
@@ -103,14 +117,14 @@ if (user === null) {
       }}>logout</button></p>
        <div>
 
-      <Toggleable buttonLabel="new blog" ref={blogFormRef}>
+      <Toggleable buttonLabel="create new blog" ref={blogFormRef}>
         <BlogForm createBlog={addNewBlog} />
       </Toggleable>
 
       
       </div>
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog}updateBlog={updateBlog} />
       )}
     </div>
   )
