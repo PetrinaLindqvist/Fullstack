@@ -31,10 +31,10 @@ const Blog = ({ blog, updateBlog }) => {
   //console.log('blog', blog.username)
   return (
     <div style={blogStyle}>
-      <div style={hideViewInfo} className='blog'>
-        {blog.title} {blog.author} <button onClick={() => setViewInfo(true)}>view</button>
+      <div style={hideViewInfo}className='blog'> 
+        {blog.title} {blog.author}<button onClick={() => setViewInfo(true)}>view</button>
       </div>
-      <div style={showViewInfo}>
+      <div style={showViewInfo}className='detail'>
         {blog.title} {blog.author} <button onClick={() => setViewInfo(false)}>hide</button>
         <div>{blog.url}</div>
         <div>likes {blog.likes} <button onClick={() => {handleOnClick()}}>like</button></div>
