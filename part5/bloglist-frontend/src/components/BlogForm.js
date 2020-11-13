@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
- const BlogForm = ({ createBlog }) => {
+const BlogForm = ({ createBlog }) => {
   const [newBlogTitle, setNewBlogTitle] = useState('')
   const [newBlogAuthor, setNewBlogAuthor] = useState('')
   const [newBlogUrl, setNewBlogUrl] = useState('')
@@ -16,8 +16,7 @@ import React, { useState } from 'react'
     setNewBlogTitle('')
     setNewBlogAuthor('')
     setNewBlogUrl('')
-
-}
+  }
 
   return (
     <div>
@@ -36,7 +35,7 @@ import React, { useState } from 'react'
         <div>
                 author:
           <input
-             id='author'
+            id='author'
             type="text"
             value={newBlogAuthor}
             name="author"
@@ -46,7 +45,7 @@ import React, { useState } from 'react'
         <div>
                 url:
           <input
-             id='url'
+            id='url'
             type="text"
             value={newBlogUrl}
             name="url"
