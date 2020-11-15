@@ -55,6 +55,27 @@ describe('Blog app', function() {
       cy.contains('www.sundayBlog.fi')
       cy.contains('A new blog "Sunday blog" by Liam L is added')
     })
+
+    it('A blog can be liked', function() {
+      cy.contains('create new blog').click()
+      cy.get('#title').type('Sunday blog')
+      cy.get('#author').type('Liam L')
+      cy.get('#url').type('www.sundayBlog.fi')
+      cy.get('#createBlog').click()
+      cy.contains('view').click()
+
+      cy.get('#likeButton').click()
+      cy.get('#likes').contains(1)
+
+      cy.get('#likeButton').click()
+      cy.get('#likes').contains(2)
+
+      cy.get('#likeButton').click()
+      cy.get('#likes').contains(3)
+
+      cy.get('#likeButton').click()
+      cy.get('#likes').contains(4)
+    })
   })
 
 })

@@ -37,7 +37,7 @@ const Blog = ({ blog, updateBlog }) => {
       <div style={showViewInfo}className='detail'>
         {blog.title} {blog.author} <button onClick={() => setViewInfo(false)}>hide</button>
         <div>{blog.url}</div>
-        <div>likes {blog.likes} <button onClick={() => {handleOnClick()}}>like</button></div>
+        <div id='likes'> likes {blog.likes} <button id='likeButton' onClick={() => {handleOnClick()}}>like</button></div>
         <div>{blog.user.name}</div>
       </div>
     </div>
