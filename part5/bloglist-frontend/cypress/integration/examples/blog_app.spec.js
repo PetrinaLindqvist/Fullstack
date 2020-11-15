@@ -10,7 +10,7 @@ describe('Blog app', function() {
     cy.visit('http://localhost:3000')
   })
   it('Login form is shown', function() {
-    cy.contains('Login')
+    cy.contains('login')
   })
 
 
@@ -36,4 +36,25 @@ describe('Blog app', function() {
       cy.get('.error').should('have.css', 'border-style', 'solid')
     })
   })
+
+  describe('When logged in', function() {
+    beforeEach(function() {
+      cy.get('#username').type('pLi')
+      cy.get('#password').type('lind')
+      cy.get('#login-button').click()
+    })
+
+    it('A blog can be created', function() {
+      cy.contains('create new blog').click()
+      cy.get('#title').type('Sunday blog')
+      cy.get('#author').type('Liam L')
+      cy.get('#url').type('www.sundayBlog.fi')
+      cy.get('#createBlog').click()
+
+      cy.contains('Sunday blog')
+      cy.contains('www.sundayBlog.fi')
+      cy.contains('A new blog "Sunday blog" by Liam L is added')
+    })
+  })
+
 })
