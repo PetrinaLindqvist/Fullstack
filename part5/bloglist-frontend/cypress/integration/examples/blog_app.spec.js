@@ -91,6 +91,40 @@ describe('Blog app', function() {
       cy.get('html').should('not.have.value', 'Sunday blog')
 
     })
-  })
+    describe.only('Blogs with most likes in order', function() {
+      cy.contains('create new blog').click()
 
+      it('A blog can be created', function() {
+        cy.contains('create new blog').click()
+        cy.get('#title').type('Sunday blog')
+        cy.get('#author').type('Liam L')
+        cy.get('#url').type('www.sundayBlog.fi')
+        cy.get('#likes').type('28')
+        cy.get('#createBlog').click()
+
+      })
+      it('A blog can be created', function() {
+        cy.contains('create new blog').click()
+        cy.get('#title').type('Monday blog')
+        cy.get('#author').type('Noel L')
+        cy.get('#url').type('www.mondayBlog.fi')
+        cy.get('#likes').type('54')
+        cy.get('#createBlog').click()
+
+        it('A blog can be created', function() {
+          cy.contains('create new blog').click()
+          cy.get('#title').type('Tuesday blog')
+          cy.get('#author').type('Nova L')
+          cy.get('#url').type('www.tuesdayBlog.fi')
+          cy.get('#likes').type('')
+          cy.get('#createBlog').click()
+        })
+
+        cy.get('#likes').contains(28)
+        cy.get('#likes').contains(54)
+        cy.get('#likes').contains(14)
+
+      })
+    })
+  })
 })
