@@ -59,6 +59,25 @@ const App = () => {
 
   }
 
+  const deleteBlog = (id) => {
+    const blog = blogs.find(b => b.id === id)
+    const confMessage = (window.confirm(`Remove blog "${blog.title}" by ${blog.author} ?`))
+    if(confMessage) {
+      blogService
+        .removeObject(id)
+        .then(() => {
+          setBlogs(blogs.filter(b => id !== b.id))
+          setMessage(`${blog.title} was deleted!`)
+          setTimeout(() => {
+            setMessage(null)
+          }, 5000)
+        })
+    }
+    else {
+      return null
+    }
+  }
+
   const handleLogin = async (event) => {
     event.preventDefault()
     //console.log('logging in with', username, password)
@@ -125,7 +144,7 @@ const App = () => {
 
       </div>
       {blogsSorted(blogs).map(blog =>
-        <Blog key={blog.id} blog={blog}updateBlog={updateBlog} />
+        <Blog key={blog.id} blog={blog}updateBlog={updateBlog} deleteBlog={deleteBlog} user={user}/>
       )}
     </div>
   )

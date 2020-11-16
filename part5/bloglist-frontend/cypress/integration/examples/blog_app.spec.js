@@ -76,6 +76,21 @@ describe('Blog app', function() {
       cy.get('#likeButton').click()
       cy.get('#likes').contains(4)
     })
+
+
+    it('A blog can be removed', function() {
+      cy.contains('create new blog').click()
+      cy.get('#title').type('Sunday blog')
+      cy.get('#author').type('Liam L')
+      cy.get('#url').type('www.sundayBlog.fi')
+      cy.get('#createBlog').click()
+      cy.contains('view').click()
+
+      cy.contains('Sunday blog')
+      cy.get('#removeButton').click()
+      cy.get('html').should('not.have.value', 'Sunday blog')
+
+    })
   })
 
 })
