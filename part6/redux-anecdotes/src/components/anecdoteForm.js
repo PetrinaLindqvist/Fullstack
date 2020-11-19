@@ -1,12 +1,12 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import { createAnecdote } from '../reducers/anecdoteReducer'
-import { showNotif, hideNotif } from '../reducers/notificationReducer'
+import { showNotif } from '../reducers/notificationReducer'
 
 const AnecdoteForm = () => {
   const dispatch = useDispatch()
 
-  const hide = () => dispatch(hideNotif(''))
+  const hide = () => dispatch(showNotif(''))
   const addAnecdote = (event) => {
     event.preventDefault()
     const content = event.target.anecdote.value
