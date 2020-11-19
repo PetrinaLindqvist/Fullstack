@@ -10,7 +10,7 @@ const AnecdoteList = () => {
   const dispatch = useDispatch()
   
 
-  const hide = () => dispatch(showNotif(''))
+  const hide = () => dispatch((''))
   const vote = (id, content) => {
     dispatch(handVote(id))
     dispatch(showNotif(`You have voted on this: "${content}"`))

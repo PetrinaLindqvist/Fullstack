@@ -16,6 +16,7 @@ const notificationReducer = (state = initialState, action) => {
     //default:
       //return state
 
+
 export const showNotif = notification => {
   return {
     type: 'SET_NOTIFICATIONS',
