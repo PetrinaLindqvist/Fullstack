@@ -1,4 +1,5 @@
 import anecdoteService from '../services/anecdotes'
+
 const reducer = (state = [], action) => {
   console.log('state now: ', state)
   console.log('action', action)
@@ -8,7 +9,6 @@ const reducer = (state = [], action) => {
       const voteToChange = state.find(vot => vot.id === id)
       const changedVote = { 
         ...voteToChange, 
-        votes: voteToChange.votes +1
       }
       return state.map(vote =>
         vote.id !== id ? vote : changedVote )
@@ -24,14 +24,18 @@ const reducer = (state = [], action) => {
     }
   }
 
-  export const handVote = (id) => {
-    return {
+  export const handVote = (id, anecdote) => {
+    return async dispatch => {
+      anecdote.votes++
+      const addNewAnecdotes = await anecdoteService.update(id, anecdote)
+    	dispatch({
       type: 'NEW_VOTES',
-      data: { id }
+      data:  addNewAnecdotes 
+      })
     }
   }
 
-  export const initializeAnecdotes = (anecdotes) => {
+  export const initializeAnecdotes = () => {
     return async dispatch => {
       const anecdotes = await anecdoteService.getAll()
     	dispatch({
