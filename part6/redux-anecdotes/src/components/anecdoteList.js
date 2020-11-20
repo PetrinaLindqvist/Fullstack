@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { handVote } from '../reducers/anecdoteReducer'
-import { showNotif, hideNotif } from '../reducers/notificationReducer'
+import { showNotif } from '../reducers/notificationReducer'
 
 
 const AnecdoteList = () => {
@@ -10,11 +10,11 @@ const AnecdoteList = () => {
   const dispatch = useDispatch()
   
 
-  const hide = () => dispatch(hideNotif())
+  
   const vote = (id, anecdote) => {
     dispatch(handVote(id, anecdote))
-    dispatch(showNotif(`You have voted on this: "${anecdote.content}"`))
-    setTimeout(hide, 5000)
+    dispatch(showNotif(`You have voted on this: "${anecdote.content}"`, 5))
+    
         
   }
 

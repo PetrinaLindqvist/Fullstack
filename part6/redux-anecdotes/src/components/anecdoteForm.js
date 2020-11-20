@@ -6,15 +6,15 @@ import { showNotif } from '../reducers/notificationReducer'
 const AnecdoteForm = () => {
   const dispatch = useDispatch()
 
-  const hide = () => dispatch(showNotif(''))
+  
 
   const addAnecdote = async (event) => {
     event.preventDefault()
     const content = event.target.anecdote.value
     event.target.anecdote.value = ''
     dispatch(createAnecdote(content))
-    dispatch(showNotif(`"${content}" is added`))
-    setTimeout(hide, 5000)
+    dispatch(showNotif(`"${content}" is added`, 5))
+    
   }  
     return (
     <div>
