@@ -67,9 +67,11 @@ const Footer = () => (
 let timeoutID
 
 const CreateNew = (props) => {
-  const content = useField('text')
-  const author = useField('text')
-  const info = useField('text')
+  const { resetAll: contentReset, ...content } = useField('text')
+  const { resetAll: authorReset, ...author } = useField('text')
+  const { resetAll: infoReset, ...info } = useField('text')
+
+
   
   const history = useHistory()
 
@@ -81,14 +83,14 @@ clearTimeout(timeoutID)
       content : content.value,
       author : author.value,
       info : info.value,
-      votes: 0
+      votes: 0,
     })
     history.push('/')
   }
   const fieldReset = () => {
-    content.reset()
-    author.reset()
-    info.reset()
+    contentReset()
+    authorReset()
+    infoReset()
   }
 
   return (
@@ -108,7 +110,7 @@ clearTimeout(timeoutID)
           <input {...info} name='info' />
         </div>
         <button>create</button>
-        <button type="button" onClick={fieldReset}>reset</button>
+        <button type="reset" onClick={fieldReset}>reset</button>
       </form>
     </div>
   )
