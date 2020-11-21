@@ -85,6 +85,11 @@ clearTimeout(timeoutID)
     })
     history.push('/')
   }
+  const fieldReset = () => {
+    content.reset()
+    author.reset()
+    info.reset()
+  }
 
   return (
     <div>
@@ -103,6 +108,7 @@ clearTimeout(timeoutID)
           <input {...info} name='info' />
         </div>
         <button>create</button>
+        <button type="button" onClick={fieldReset}>reset</button>
       </form>
     </div>
   )
