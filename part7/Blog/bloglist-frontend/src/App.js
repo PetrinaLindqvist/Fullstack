@@ -9,7 +9,7 @@ import loginService from './services/login'
 import storage from './utils/storage'
 import { useDispatch, useSelector } from 'react-redux'
 import { setNotification } from './reducers/notificationReducer'
-import { initializeBlogs, addBlogs } from './reducers/blogReducer'
+import { initializeBlogs, addBlogs, likeBlogs, removeBlogs } from './reducers/blogReducer'
 
 
 const App = () => {
@@ -64,21 +64,19 @@ const App = () => {
   }
 
   const handleLike = async (id) => {
-    /*const blogToLike = blogs.find(b => b.id === id)
-    const likedBlog = { ...blogToLike, likes: blogToLike.likes + 1, user: blogToLike.user.id }
-    await blogService.update(likedBlog)
-    setBlogs(blogs.map(b => b.id === id ?  { ...blogToLike, likes: blogToLike.likes + 1 } : b))*/
+    const blogLike = blogs.find(b => b.id === id)
+    const likedBlogs = { ...blogLike, likes: blogLike.likes + 1, user: blogLike.user.id }
+    dispatch(likeBlogs(likedBlogs))
   }
 
   const handleRemove = async (id) => {
-    /*const blogToRemove = blogs.find(b => b.id === id)
-    const ok = window.confirm(`Remove blog ${blogToRemove.title} by ${blogToRemove.author}`)
+    const blogsToRemove = blogs.find(b => b.id === id)
+    const ok = window.confirm(`Remove blog ${blogsToRemove.title} by ${blogsToRemove.author}`)
     if (ok) {
-      await blogService.remove(id)
-      setBlogs(blogs.filter(b => b.id !== id))
-    }
-    notifyWith(`Deleted blog "${blogToRemove.title}" by ${blogToRemove.author}`, 'error')
-  }*/
+      dispatch(removeBlogs(blogsToRemove.id))
+    
+    notifyWith(`Deleted blog "${blogsToRemove.title}" by ${blogsToRemove.author}`, 'error')
+  }
 }
   
 
