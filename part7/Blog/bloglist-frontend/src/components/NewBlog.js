@@ -50,3 +50,5 @@ const NewBlog = (props) => {
     </div>
   )
 }
+
+export default NewBlog

@@ -26,7 +26,8 @@ const Blog = ({ blog, handleLike, handleRemove, own }) => {
             <button onClick={() => handleLike(blog.id)}>like</button>
           </div>
           <div>{blog.user.name}</div>
-          {own&&<button onClick={() => handleRemove(blog.id)}>remove</button>}
+      <div>{own&&<button onClick={() => handleRemove(blog.id)}>remove</button>}</div>
+          
         </div>
       )}
     </div>
