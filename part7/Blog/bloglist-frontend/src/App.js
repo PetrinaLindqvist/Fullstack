@@ -6,11 +6,15 @@ import NewBlog from './components/NewBlog'
 
 import blogService from './services/blogs'
 import loginService from './services/login'
+import usersService from './services/users'
 import storage from './utils/storage'
 import { useDispatch, useSelector } from 'react-redux'
 import { setNotification } from './reducers/notificationReducer'
 import { initializeBlogs, addBlogs, likeBlogs, removeBlogs } from './reducers/blogReducer'
+import { initializeUsers } from './reducers/usersReducer'
 import { userPlace, userUndo } from './reducers/userReducer'
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom" 
+
 
 
 const App = () => {
@@ -19,12 +23,18 @@ const App = () => {
   const dispatch = useDispatch()
   const blogs = useSelector(state => state.blogs)
   const user = useSelector(state => state.user)
+  const users = useSelector(state => state.users)
+
 
   const blogFormRef = React.createRef()
 
   useEffect(() => {
     dispatch(initializeBlogs())
+    usersService
+      .getAll()
+      .then(users => dispatch(initializeUsers(users)))
   }, [dispatch])
+
 
   useEffect(() => {
     const user = storage.loadUser()
@@ -92,7 +102,7 @@ const App = () => {
         <h2>login to application</h2>
 
         <Notification />
-
+        
         <form onSubmit={handleLogin}>
           <div>
             username
@@ -117,21 +127,34 @@ const App = () => {
   }
 
   const byLikes = (b1, b2) => b2.likes - b1.likes
-
+console.log(users)
   return (
     <div>
+     <Router>
       <h2>blogs</h2>
-
       <Notification />
-
       <p>
-        {user.name} logged in <button onClick={handleLogout}>logout</button>
+        {user.name} logged in 
       </p>
-
+      <p><button onClick={handleLogout}>logout</button></p>
+      <Switch>
+        <Route path="/users">
+          <h3>Users</h3>
+          <table>
+            <thead>
+            <tr><th></th><th>blogs created</th></tr>
+            </thead>
+            <tbody>
+            {users.map(user => 
+           <tr key={user.id}><td>{user.name}</td><td>{user.blogs.length}</td> 
+           </tr>)}
+           </tbody>
+          </table>
+        </Route>
+        <Route path="/">
       <Togglable buttonLabel='create new blog'  ref={blogFormRef}>
         <NewBlog createBlog={createBlog} />
       </Togglable>
-
       {blogs.sort(byLikes).map(blog =>
         <Blog
           key={blog.id}
@@ -141,7 +164,10 @@ const App = () => {
           own={user.username===blog.user.username}
         />
       )}
-    </div>
+       </Route>
+      </Switch>
+    </Router>
+  </div>
   )
 }
 

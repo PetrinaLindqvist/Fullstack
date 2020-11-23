@@ -24,4 +24,11 @@ export const userUndo = () => {
   }
 }
 
+/*export const initializeUsers = (users) => {
+  return {
+    typ: 'INIT_USERS',
+    data: users,
+  }
+}*/
+
 export default userReducer
