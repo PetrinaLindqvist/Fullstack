@@ -100,6 +100,11 @@ const App = () => {
   const matchingUser = matching
     ? users.find(user => user.id === (matching.params.id))
     : null
+
+  const blogsMatching = useRouteMatch('/blogs/:id')
+  const matchingBlog = blogsMatching
+    ? blogs.find(user => user.id === (blogsMatching.params.id))
+    : null
    
   if ( !user ) {
     return (
@@ -152,6 +157,21 @@ const App = () => {
       return
  }
 
+ const BlogPage =() => {
+  if(!matchingBlog) {
+    return null
+  }
+
+  return (
+    <>
+      <h2>{matchingBlog.title} {matchingBlog.author}</h2>
+      <a href={matchingBlog.url}>{matchingBlog.url}</a>
+      <div>{matchingBlog.likes} likes <button onClick={() => handleLike(matchingBlog.id)}>like</button></div>
+      <div>added by {matchingBlog.author}</div>
+    </>
+  )
+
+}
 
   return (
     <div>
@@ -178,6 +198,9 @@ const App = () => {
            </tr>)}
            </tbody>
           </table>
+          </Route>
+        <Route path="/blogs/:id">
+          <BlogPage/>
         </Route>
         <Route path="/">
       <Togglable buttonLabel='create new blog'  ref={blogFormRef}>
