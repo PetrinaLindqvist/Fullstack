@@ -13,7 +13,7 @@ import { setNotification } from './reducers/notificationReducer'
 import { initializeBlogs, addBlogs, likeBlogs, removeBlogs } from './reducers/blogReducer'
 import { initializeUsers } from './reducers/usersReducer'
 import { userPlace, userUndo } from './reducers/userReducer'
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom" 
+import { BrowserRouter as Router, Switch, Route, Link, useRouteMatch } from "react-router-dom" 
 
 
 
@@ -96,6 +96,11 @@ const App = () => {
     storage.logoutUser()
   }
 
+  const matching = useRouteMatch('/users/:id')
+  const matchingUser = matching
+    ? users.find(user => user.id === (matching.params.id))
+    : null
+   
   if ( !user ) {
     return (
       <div>
@@ -127,7 +132,27 @@ const App = () => {
   }
 
   const byLikes = (b1, b2) => b2.likes - b1.likes
-console.log(users)
+ 
+  const User = () => {
+   if(!matchingUser) {
+     return null
+   }
+   if (user !== null) {
+     const name = matchingUser.name
+     return (
+       <>
+        <h2>{name}</h2>
+        <b>added blogs</b>
+        <ul>
+          {matchingUser.blogs.map(blog => <li key={blog.id}>{blog.title}</li>)}
+        </ul>
+        </>
+     )
+   }
+      return
+ }
+
+
   return (
     <div>
      <Router>
@@ -138,7 +163,10 @@ console.log(users)
       </p>
       <p><button onClick={handleLogout}>logout</button></p>
       <Switch>
-        <Route path="/users">
+        <Route path="/users/:id">
+          <User user={matchingUser}/>
+          </Route>
+          <Route path="/users">
           <h3>Users</h3>
           <table>
             <thead>
@@ -146,7 +174,7 @@ console.log(users)
             </thead>
             <tbody>
             {users.map(user => 
-           <tr key={user.id}><td>{user.name}</td><td>{user.blogs.length}</td> 
+           <tr key={user.id}><td><Link to={`/users/${user.id}`}>{user.name}</Link></td><td>{user.blogs.length}</td> 
            </tr>)}
            </tbody>
           </table>
