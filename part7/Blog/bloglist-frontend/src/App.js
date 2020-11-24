@@ -14,12 +14,14 @@ import { initializeBlogs, addBlogs, likeBlogs, removeBlogs } from './reducers/bl
 import { initializeUsers } from './reducers/usersReducer'
 import { userPlace, userUndo } from './reducers/userReducer'
 import { BrowserRouter as Router, Switch, Route, Link, useRouteMatch } from "react-router-dom" 
+import CommentsForm from './components/CommentsForm'
 
 
 
 const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  //const [comment, setComments] = useState('')
   const dispatch = useDispatch()
   const blogs = useSelector(state => state.blogs)
   const user = useSelector(state => state.user)
@@ -69,6 +71,22 @@ const App = () => {
       blogFormRef.current.toggleVisibility()
       dispatch(addBlogs(newBlog))
       notifyWith(`a new blog '${newBlog.title}' by ${newBlog.author} added!`)
+    } catch(exception) {
+      console.log(exception)
+    }
+  }
+
+  const writeComments = async (comment) => {
+    const id = matchingBlog.id
+    try {
+      const newComment = {comment}
+      await blogService.comment(newComment, id)
+      //setComments('')
+      notifyWith(`you commented blog id ${id} with comment ${comment}`)
+      dispatch(initializeBlogs(blogs.map(b => b.id === id
+        ? {...matchingBlog, comments: matchingBlog.comments.concat(comment)}
+        : b
+        )))
     } catch(exception) {
       console.log(exception)
     }
@@ -168,11 +186,20 @@ const App = () => {
       <a href={matchingBlog.url}>{matchingBlog.url}</a>
       <div>{matchingBlog.likes} likes <button onClick={() => handleLike(matchingBlog.id)}>like</button></div>
       <div>added by {matchingBlog.author}</div>
-    </>
-  )
+      <h3>comments:</h3>
+      <CommentsForm 
+      writeComments = {writeComments}
+      id = {matchingBlog.id} 
+    />
 
+    <ul>
+      {matchingBlog.comments.map((commentz, index) =>
+    <li key={index}>{commentz}</li>
+    )}
+  </ul>
+  </>
+)
 }
-
 const padding = { 
   padding: 5, 
   marginTop: 10,
