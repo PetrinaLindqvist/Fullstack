@@ -15,6 +15,7 @@ import { initializeUsers } from './reducers/usersReducer'
 import { userPlace, userUndo } from './reducers/userReducer'
 import { BrowserRouter as Router, Switch, Route, Link, useRouteMatch } from "react-router-dom" 
 import CommentsForm from './components/CommentsForm'
+import { Table, Form, Button, Alert } from 'react-bootstrap'
 
 
 
@@ -26,6 +27,7 @@ const App = () => {
   const blogs = useSelector(state => state.blogs)
   const user = useSelector(state => state.user)
   const users = useSelector(state => state.users)
+  const [message] = useState(null)
 
 
   const blogFormRef = React.createRef()
@@ -60,6 +62,7 @@ const App = () => {
       dispatch(userPlace(user))
       notifyWith(`${user.name} welcome back!`)
       storage.saveUser(user)
+      
     } catch(exception) {
       notifyWith('wrong username/password', 'error')
     }
@@ -67,10 +70,9 @@ const App = () => {
 
   const createBlog = async (blog) => {
     try {
-      const newBlog = await blogService.create(blog)
       blogFormRef.current.toggleVisibility()
-      dispatch(addBlogs(newBlog))
-      notifyWith(`a new blog '${newBlog.title}' by ${newBlog.author} added!`)
+      dispatch(addBlogs(blog))
+      notifyWith(`a new blog '${blog.title}' by ${blog.author} added!`)
     } catch(exception) {
       console.log(exception)
     }
@@ -81,7 +83,6 @@ const App = () => {
     try {
       const newComment = {comment}
       await blogService.comment(newComment, id)
-      //setComments('')
       notifyWith(`you commented blog id ${id} with comment ${comment}`)
       dispatch(initializeBlogs(blogs.map(b => b.id === id
         ? {...matchingBlog, comments: matchingBlog.comments.concat(comment)}
@@ -126,30 +127,37 @@ const App = () => {
    
   if ( !user ) {
     return (
-      <div>
-        <h2>login to application</h2>
+      <div className="container" >
+        {(message &&
+        <Alert variant="success">
+          {message}
+        </Alert>
+        )}
+        <h2>Login to application</h2>
 
         <Notification />
         
-        <form onSubmit={handleLogin}>
+        <Form onSubmit={handleLogin}>
+        <Form.Group> 
           <div>
-            username
-            <input
+          <Form.Label>username:</Form.Label>
+             <Form.Control
               id='username'
               value={username}
               onChange={({ target }) => setUsername(target.value)}
             />
           </div>
           <div>
-            password
-            <input
+          <Form.Label>password:</Form.Label>
+          <Form.Control
               id='password'
               value={password}
               onChange={({ target }) => setPassword(target.value)}
             />
           </div>
-          <button id='login'>login</button>
-        </form>
+          <Button variant="info" type="submit">login</Button>
+          </Form.Group>
+        </Form>
       </div>
     )
   }
@@ -184,7 +192,7 @@ const App = () => {
     <>
       <h2>{matchingBlog.title} {matchingBlog.author}</h2>
       <a href={matchingBlog.url}>{matchingBlog.url}</a>
-      <div>{matchingBlog.likes} likes <button onClick={() => handleLike(matchingBlog.id)}>like</button></div>
+      <div>{matchingBlog.likes} likes <Button variant='info' onClick={() => handleLike(matchingBlog.id)}>like</Button></div>
       <div>added by {matchingBlog.author}</div>
       <h3>comments:</h3>
       <CommentsForm 
@@ -217,26 +225,25 @@ const paddingbutton = {
      <div> 
         <Link style={padding} to="/">blogs</Link>
         <Link style={padding} to="/users">users</Link>
-        {user.name} logged in <button style={paddingbutton} onClick={handleLogout}>logout</button>
+        {user.name} logged in <Button variant='secondary'style={paddingbutton} onClick={handleLogout}>logout</Button>
       </div>
-      <h2>blog app</h2>
+      <h2>Blog app</h2>
       <Notification />
       <Switch>
         <Route path="/users/:id">
           <User user={matchingUser}/>
           </Route>
           <Route path="/users">
-          <h3>Users</h3>
-          <table>
+          <Table className="table table-bordered">
             <thead>
-            <tr><th></th><th>blogs created</th></tr>
+            <tr><th><h3>Users</h3></th><th>blogs created</th></tr>
             </thead>
             <tbody>
             {users.map(user => 
            <tr key={user.id}><td><Link to={`/users/${user.id}`}>{user.name}</Link></td><td>{user.blogs.length}</td> 
            </tr>)}
            </tbody>
-          </table>
+          </Table>
           </Route>
         <Route path="/blogs/:id">
           <BlogPage/>
@@ -257,6 +264,7 @@ const paddingbutton = {
        </Route>
       </Switch>
     </Router>
+
   </div>
   )
 }
